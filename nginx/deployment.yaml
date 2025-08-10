@@ -13,6 +13,9 @@ spec:
         app: nginx
     spec:
       containers:
+        - name: debug
+	  image: nicolaka/netshoot
+  	  command: [ "sleep", "infinity" ]
         - name: nginx
           image: bitnami/nginx:latest
           ports:
