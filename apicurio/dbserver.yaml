@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: registry
-          image: apicurio/apicurio-registry-sql:latest
+          image: apicurio/apicurio-registry:latest
           resources:
             requests:
               memory: "256Mi"
