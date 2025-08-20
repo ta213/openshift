@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: apicurio
+  name: apicurio-db
   namespace: argocd
 spec:
   selector:
-    app: apicurio
+    app: apicurio-db
   ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
+    - port: 5432
+      targetPort: 5432
   type: ClusterIP

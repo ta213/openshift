@@ -1,49 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apicurio
+  name: apicurio-db
   namespace: argocd
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: apicurio
+      app: apicurio-db
   template:
     metadata:
       labels:
-        app: apicurio
+        app: apicurio-db
     spec:
       containers:
-        - name: apicurio
-          image: apicurio/apicurio-studio:latest
+        - name: postgresql
+          image: bitnami/postgresql:15
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "200m"
+              memory: "128Mi"
+              cpu: "100m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
-          ports:
-            - containerPort: 8080
+              memory: "256Mi"
+              cpu: "250m"
           env:
-            # HTTP/UI settings
-            - name: QUARKUS_HTTP_PORT
-              value: "8080"
-            - name: QUARKUS_HTTP_ROOT_PATH
-              value: "/"
-            - name: STUDIO_UI_CONTEXT
-              value: "/"
-
-            # ✅ Correct DB settings for Apicurio Studio
-            - name: APICURIO_DB_TYPE
-              value: "postgresql"
-            - name: APICURIO_DB_HOST
-              value: "apicurio-db"
-            - name: APICURIO_DB_PORT
-              value: "5432"
-            - name: APICURIO_DB_NAME
+            - name: POSTGRESQL_USERNAME
               value: "apicurio"
-            - name: APICURIO_DB_USER
+            - name: POSTGRESQL_PASSWORD
               value: "apicurio"
-            - name: APICURIO_DB_PASS
+            - name: POSTGRESQL_DATABASE
               value: "apicurio"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pg-data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: pg-data
+          emptyDir: {}  
