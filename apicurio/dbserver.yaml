@@ -1,36 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apicurio-registry
+  name: apicurio-db
   namespace: argocd
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: apicurio-registry
+      app: apicurio-db
   template:
     metadata:
       labels:
-        app: apicurio-registry
+        app: apicurio-db
     spec:
       containers:
-        - name: registry
-          image: apicurio/apicurio-registry:3.0.9
+        - name: postgresql
+          image: bitnami/postgresql:15
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "200m"
+              memory: "128Mi"
+              cpu: "100m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
-          ports:
-            - containerPort: 8080
+              memory: "256Mi"
+              cpu: "250m"
           env:
-            - name: REGISTRY_DATASOURCE_URL
-              value: "jdbc:postgresql://apicurio-db:5432/apicurio"
-            - name: REGISTRY_DATASOURCE_USERNAME
+            - name: POSTGRESQL_USERNAME
               value: "apicurio"
-            - name: REGISTRY_DATASOURCE_PASSWORD
+            - name: POSTGRESQL_PASSWORD
               value: "apicurio"
-            - name: REGISTRY_DATASOURCE_DRIVER
-              value: "org.postgresql.Driver"
+            - name: POSTGRESQL_DATABASE
+              value: "apicurio"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pg-data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: pg-data
+          emptyDir: {}  
