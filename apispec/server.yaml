@@ -26,17 +26,24 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            # HTTP/UI settings
             - name: QUARKUS_HTTP_PORT
               value: "8080"
             - name: QUARKUS_HTTP_ROOT_PATH
-              value: "/"             # serve at root
+              value: "/"
             - name: STUDIO_UI_CONTEXT
-              value: "/"             # ensures UI served at root
-            - name: QUARKUS_DATASOURCE_JDBC_URL
-              value: "jdbc:postgresql://apicurio-db:5432/apicurio"
-            - name: QUARKUS_DATASOURCE_USERNAME
+              value: "/"
+
+            # ✅ Correct DB settings for Apicurio Studio
+            - name: APICURIO_DB_TYPE
+              value: "postgresql"
+            - name: APICURIO_DB_HOST
+              value: "apicurio-db"
+            - name: APICURIO_DB_PORT
+              value: "5432"
+            - name: APICURIO_DB_NAME
               value: "apicurio"
-            - name: QUARKUS_DATASOURCE_PASSWORD
+            - name: APICURIO_DB_USER
               value: "apicurio"
-            - name: QUARKUS_DATASOURCE_DRIVER
-              value: "org.postgresql.Driver"
+            - name: APICURIO_DB_PASS
+              value: "apicurio"
