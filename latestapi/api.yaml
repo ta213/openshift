@@ -42,22 +42,6 @@ spec:
         - name: pg-data
           emptyDir: {}
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: apicurio-db
-  namespace: argocd
-spec:
-  selector:
-    app: apicurio-db
-  ports:
-    - port: 5432
-      targetPort: 5432
-  type: ClusterIP
-
-# ------------------------
-# 2. Apicurio Studio Deployment (lightweight)
-# ------------------------
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -101,23 +85,6 @@ spec:
             - name: QUARKUS_DATASOURCE_DRIVER
               value: "org.postgresql.Driver"
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: apicurio
-  namespace: argocd
-spec:
-  selector:
-    app: apicurio
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-  type: ClusterIP
-
-# ------------------------
-# 3. Route
-# ------------------------
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
