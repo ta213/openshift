@@ -1,0 +1,123 @@
+# ------------------------
+# 1. PostgreSQL Deployment
+# ------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apicurio-db
+  namespace: argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apicurio-db
+  template:
+    metadata:
+      labels:
+        app: apicurio-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:13
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          env:
+            - name: POSTGRES_DB
+              value: "apicurio"
+            - name: POSTGRES_USER
+              value: "apicurio"
+            - name: POSTGRES_PASSWORD
+              value: "apicurio"
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apicurio-db
+  namespace: argocd
+spec:
+  selector:
+    app: apicurio-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP
+
+# ------------------------
+# 2. Apicurio Studio Deployment
+# ------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apicurio
+  namespace: argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apicurio
+  template:
+    metadata:
+      labels:
+        app: apicurio
+    spec:
+      containers:
+        - name: apicurio
+          image: apicurio/apicurio-studio:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: QUARKUS_HTTP_PORT
+              value: "8080"
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: "jdbc:postgresql://apicurio-db:5432/apicurio"
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: "apicurio"
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: "apicurio"
+            - name: QUARKUS_DATASOURCE_DRIVER
+              value: "org.postgresql.Driver"
+            - name: QUARKUS_HTTP_ROOT_PATH
+              value: "/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apicurio
+  namespace: argocd
+spec:
+  selector:
+    app: apicurio
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: apicurio
+  namespace: argocd
+spec:
+  to:
+    kind: Service
+    name: apicurio
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+
