@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apicurio
+  namespace: argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apicurio
+  template:
+    metadata:
+      labels:
+        app: apicurio
+    spec:
+      containers:
+        - name: apicurio
+          image: apicurio/apicurio-studio:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APICURIO_UI_HOST
+              value: "0.0.0.0"
