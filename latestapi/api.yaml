@@ -1,5 +1,5 @@
 # ------------------------
-# 0. Namespace (if it doesn't exist)
+# 0. Namespace
 # ------------------------
 apiVersion: v1
 kind: Namespace
@@ -97,7 +97,9 @@ spec:
             - name: QUARKUS_HTTP_PORT
               value: "8080"
             - name: QUARKUS_HTTP_ROOT_PATH
-              value: "/"
+              value: "/"             # serve at root
+            - name: STUDIO_UI_CONTEXT
+              value: "/"             # ensures UI served at root
             - name: QUARKUS_DATASOURCE_JDBC_URL
               value: "jdbc:postgresql://apicurio-db:5432/apicurio"
             - name: QUARKUS_DATASOURCE_USERNAME
@@ -120,7 +122,10 @@ spec:
       port: 8080
       targetPort: 8080
   type: ClusterIP
----
+
+# ------------------------
+# 3. Route
+# ------------------------
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
