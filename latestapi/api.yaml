@@ -1,12 +1,4 @@
 # ------------------------
-# 0. Namespace
-# ------------------------
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argocd
-
-# ------------------------
 # 1. Bitnami PostgreSQL Deployment (lightweight)
 # ------------------------
 apiVersion: apps/v1
