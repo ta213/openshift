@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apicurio
+  namespace: argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apicurio
+  template:
+    metadata:
+      labels:
+        app: apicurio
+    spec:
+      containers:
+        - name: apicurio
+          image: apicurio/apicurio-studio:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: QUARKUS_HTTP_PORT
+              value: "8080"
+            - name: QUARKUS_HTTP_ROOT_PATH
+              value: "/"             # serve at root
+            - name: STUDIO_UI_CONTEXT
+              value: "/"             # ensures UI served at root
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: "jdbc:postgresql://apicurio-db:5432/apicurio"
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: "apicurio"
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: "apicurio"
+            - name: QUARKUS_DATASOURCE_DRIVER
+              value: "org.postgresql.Driver"
