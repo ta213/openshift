@@ -26,6 +26,8 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: REGISTRY_FEATURES_ARTIFACTS_DELETE
+              value: "true"
             - name: REGISTRY_DATASOURCE_URL
               value: "jdbc:postgresql://apicurio-db:5432/apicurio"
             - name: REGISTRY_DATASOURCE_USERNAME
