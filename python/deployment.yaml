@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-api
+  namespace: argocd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-api
+  template:
+    metadata:
+      labels:
+        app: user-api
+    spec:
+      containers:
+        - name: user-api
+          image: image-registry.openshift-image-registry.svc:5000/argocd/flask-user-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REGISTRY_BASE_URL
+              value: "https://apicurio-registry-argocd.apps.openshift.jaffna.ca/apis/registry/v2"
+            - name: REGISTRY_GROUP
+              value: "default"
+            - name: SCHEMA_ID
+              value: "user-schema"
+            - name: OPENAPI_ID
+              value: "user-api"
+            - name: VERIFY_SSL
+              value: "false"   # set "true" if your cert is trusted
+
