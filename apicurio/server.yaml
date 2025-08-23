@@ -16,8 +16,6 @@ spec:
       containers:
         - name: registry
           image: apicurio/apicurio-registry:3.0.9
-          ports:
-            - containerPort: 8080
           resources:
             requests:
               memory: "256Mi"
@@ -25,35 +23,16 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
+          ports:
+            - containerPort: 8080
           env:
-            - name: JAVA_OPTIONS
-              value: >
-                -Dquarkus.datasource.jdbc.url=jdbc:postgresql://apicurio-db:5432/apicurio
-                -Dquarkus.datasource.username=$(DB_USERNAME)
-                -Dquarkus.datasource.password=$(DB_PASSWORD)
-                -Dquarkus.datasource.db-kind=postgresql
-                -Dquarkus.hibernate-orm.database.generation=update
-            - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: apicurio-db-secret
-                  key: username
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: apicurio-db-secret
-                  key: password
-            - name: REGISTRY_FEATURES_ARTIFACTS_DELETE
-              value: "true"
-          readinessProbe:
-            httpGet:
-              path: /health/ready
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health/live
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 20
+            - name: APICURIO_DATASOURCE_URL
+              value: "jdbc:postgresql://apicurio-db.argocd.svc.cluster.local:5432/apicurio"
+            - name: APICURIO_DATASOURCE_USERNAME
+              value: "apicurio"
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: "apicurio"
+            - name: APICURIO_DATASOURCE_SQL_KIND
+              value: "postgresql"
+            - name: APICURIO_STORAGE_KIND
+              value: "sql"
