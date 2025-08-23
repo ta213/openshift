@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: registry
-          image: apicurio/apicurio-registry:3.0.9
+          image: apicurio/apicurio-registry-ui:3.0.9
           resources:
             requests:
               memory: "256Mi"
