@@ -28,15 +28,11 @@ spec:
           env:
             - name: REGISTRY_FEATURES_ARTIFACTS_DELETE
               value: "true"
-            - name: QUARKUS_DATASOURCE_JDBC_URL
+            - name: REGISTRY_DATASOURCE_URL
               value: "jdbc:postgresql://apicurio-db:5432/apicurio"
-            - name: QUARKUS_DATASOURCE_USERNAME
+            - name: REGISTRY_DATASOURCE_USERNAME
               value: "apicurio"
-            - name: QUARKUS_DATASOURCE_PASSWORD
+            - name: REGISTRY_DATASOURCE_PASSWORD
               value: "apicurio"
-            - name: QUARKUS_DATASOURCE_DRIVER
+            - name: REGISTRY_DATASOURCE_DRIVER
               value: "org.postgresql.Driver"
-            - name: QUARKUS_DATASOURCE_DB_KIND
-              value: "postgresql"
-            - name: QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION
-              value: "update"
