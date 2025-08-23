@@ -27,7 +27,7 @@ spec:
             - containerPort: 8080
           env:
             - name: APICURIO_DATASOURCE_URL
-              value: "jdbc:postgresql://apicurio-db.argocd.svc.cluster.local:5432/apicurio"
+              value: "jdbc:postgresql://apicurio-db:5432/apicurio"
             - name: APICURIO_DATASOURCE_USERNAME
               value: "apicurio"
             - name: QUARKUS_DATASOURCE_PASSWORD
