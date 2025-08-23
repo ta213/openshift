@@ -26,13 +26,13 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: APICURIO_STORAGE_KIND
+              value: "sql"
+            - name: APICURIO_STORAGE_SQL_KIND
+              value: "postgresql"
             - name: APICURIO_DATASOURCE_URL
               value: "jdbc:postgresql://apicurio-db:5432/apicurio"
             - name: APICURIO_DATASOURCE_USERNAME
               value: "apicurio"
             - name: QUARKUS_DATASOURCE_PASSWORD
               value: "apicurio"
-            - name: APICURIO_DATASOURCE_SQL_KIND
-              value: "postgresql"
-            - name: APICURIO_STORAGE_KIND
-              value: "sql"
