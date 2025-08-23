@@ -34,5 +34,5 @@ spec:
               value: "jdbc:postgresql://apicurio-db:5432/apicurio"
             - name: APICURIO_DATASOURCE_USERNAME
               value: "apicurio"
-            - name: QUARKUS_DATASOURCE_PASSWORD
+            - name: APICURIO_DATASOURCE_PASSWORD
               value: "apicurio"
