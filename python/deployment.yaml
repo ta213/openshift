@@ -21,7 +21,7 @@ spec:
             - containerPort: 5000
           env:
             - name: REGISTRY_BASE_URL
-              value: "https://apicurio-registry-argocd.apps.openshift.jaffna.ca/apis/registry/v2"
+              value: "https://apicurio-registry-argocd.apps.openshift.jaffna.ca/apis/registry/v3"
             - name: REGISTRY_GROUP
               value: "default"
             - name: SCHEMA_ID
